@@ -1,5 +1,6 @@
 ###### 17.3.2024
 
+> API Documentation update
 > localhost and production server start command change
 > `get: suggested_id` endpoint logic definition
 > `post: registered_id` enpoint logic definition
