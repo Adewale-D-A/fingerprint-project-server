@@ -17,5 +17,12 @@
     "university of Ilorin"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "nodemon": "^3.1.0",
+    "pm2": "^5.3.1"
+  }
 }
