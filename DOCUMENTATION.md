@@ -1,6 +1,6 @@
 ## API SERVICE DOCUMENTATION
 
-> Base Hosted Endpoint: <a href="https://fingerprint-project.azurewebsites.net/" target="_bank">{{https://fingerprint-project.azurewebsites.net/}}</a>
+> Base Hosted Endpoint: <a href="https://fingerprint-project.azurewebsites.net/" target="_bank">base_url</a>
 > Base Endpoint Response: `Project server is actively listening`
 
 #### GET REQUEST: Suggest ID for fingerprint registration
