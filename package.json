@@ -1,0 +1,21 @@
+{
+  "name": "project-server",
+  "version": "1.0.0",
+  "description": "Fingerprint scanner dedicated server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "dev": "pm2 start index.js --name \"Project-Server-API\" --watch",
+    "prod": "pm2 start index.js --name \"Project-Server-API\""
+  },
+  "keywords": [
+    "fingerprint",
+    "server",
+    "attendance",
+    "project",
+    "university of Ilorin"
+  ],
+  "author": "",
+  "license": "ISC"
+}
