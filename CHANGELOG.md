@@ -1,3 +1,13 @@
+###### 4.05.2024
+
+> Routes separationg for hardware and admin tasks
+
+> Deleting IDs from server and hardware device
+> Api documentation update
+> `post: /set-id-to-delete` endpoint added
+> `get: /id-to-delete` endpoint added
+> `post: /remove-id-from-server` endpoint added
+
 ###### 1.05.2024
 
 > Making a merge to main branch with these updates

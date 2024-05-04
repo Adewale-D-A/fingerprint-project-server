@@ -140,3 +140,62 @@ total_verified_users: 0,
 ```
 
 ```
+
+#### POST REQUEST: Set ID to delete
+
+> Endpoint: {{base_url}}`/set-id-to-delete`
+> Response:
+
+```
+
+{
+        success: true,
+        message: `ID to delete has been set to 4`,
+        data: {
+          reply: 1, //either 1 or 0
+          student_data,
+          total_available_ids: 88,
+          total_registered_ids: 912,
+        },
+      }
+
+```
+
+#### GET REQUEST: Set ID to delete
+
+> Endpoint: {{base_url}}`/id-to-delete`
+> Response:
+
+```
+
+{
+      success: true,
+      message: `ID to delete is 6`,
+      data: {
+        reply: 1, //either 1 or 0
+        student_data,
+        total_available_ids: 88,
+        total_registered_ids: 912,
+      },
+    }
+
+```
+
+#### POST REQUEST: Remove deleted hardware id from server's registered user's database
+
+> Endpoint: {{base_url}}`/remove-id-from-server`
+> Response:
+
+```
+{
+          success: true,
+          message: `ID removed from database is 5`,
+          data: {
+            reply: 1, //either 1 or 0
+            student_data,
+            total_available_ids: 88,
+            total_registered_ids: 912,
+          },
+        }
+
+```
