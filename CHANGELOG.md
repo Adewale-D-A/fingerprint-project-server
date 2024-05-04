@@ -1,5 +1,8 @@
 ###### 4.05.2024
 
+> ESP32 completely functioning source code file additions //TODO: Add custom library
+> ESP32 HTTP protocol only communication source code file addition
+
 > Routes separationg for hardware and admin tasks
 
 > Deleting IDs from server and hardware device
