@@ -1,5 +1,6 @@
 ###### 4.05.2024
 
+> ESP32 completely functioning source code compileation error fix //TODO: Add custom library
 > ESP32 completely functioning source code file additions //TODO: Add custom library
 > ESP32 HTTP protocol only communication source code file addition
 

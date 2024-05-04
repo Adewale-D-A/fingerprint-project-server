@@ -1,3 +1,6 @@
+// NOTE
+// Find keyword '//TODO: Uncomment out' to remove commented out code provided the custom library is added
+
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include <Wire.h>
@@ -221,7 +224,7 @@ void displayAttendancePage() {
   u8g2.setCursor(110, 62);
   u8g2.print(finger.fingerID);
 
-  u8g2.drawXBMP(93, 9, u8g2_FinPr_scan_width, u8g2_FinPr_scan_height, u8g2_FinPr_scan_bits);
+  // u8g2.drawXBMP(93, 9, u8g2_FinPr_scan_width, u8g2_FinPr_scan_height, u8g2_FinPr_scan_bits); //TODO: Uncomment out
   u8g2.sendBuffer();
 
   for (int i = 0; i < NUMPIXELS; i++) {  // For each pixel...
@@ -516,7 +519,7 @@ void displayDeletingUserID() {
         // *_________________Get deletable Id______________________*
     }
 
-  id = deletFingerprintIdData.toInt() //readnumber();
+  id = deletFingerprintIdData.toInt(); //readnumber();
   Serial.print("Deleting ID #");
   Serial.println(id);
   u8g2.setCursor(2, 40);
@@ -609,7 +612,7 @@ void displayDeletePage() {
 
 
 
-    u8g2.drawXBMP(39, 9, u8g2_Delete_width, u8g2_Delete_height, u8g2_Delete_bits);
+    // u8g2.drawXBMP(39, 9, u8g2_Delete_width, u8g2_Delete_height, u8g2_Delete_bits); //TODO: Uncomment out
     u8g2.sendBuffer();
     delay(5000);
   // }
