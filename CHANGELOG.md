@@ -1,4 +1,13 @@
+###### 4.06.2024
+
+> ESP32 admin delete all data status functionality
+> ESP32 admin view all verified users functionality
+
 ###### 4.05.2024
+
+> ESP32 completely functioning source code compileation error fix //TODO: Add custom library
+> ESP32 completely functioning source code file additions //TODO: Add custom library
+> ESP32 HTTP protocol only communication source code file addition
 
 > Routes separationg for hardware and admin tasks
 

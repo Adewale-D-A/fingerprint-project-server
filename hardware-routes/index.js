@@ -5,6 +5,7 @@ const router = express.Router();
 const registeredDB_url = "./files/registered.json";
 const verifiedDB_url = "./files/verified.json";
 const isToDeleteDB_url = "./files/idToDelete.json";
+const purge_url = "./files/purgeState.json";
 //TODO: Logic to get dynamic variables for total available and registered IDS
 const total_available_ids = 543;
 const total_registered_ids = 422;
@@ -196,7 +197,10 @@ router.post("/remove-id-from-server", (req, res) => {
           ids: newDBcopy,
         });
 
+        const resetIdState = JSON.stringify({ id: "" });
+
         fs.writeFileSync(registeredDB_url, removedId);
+        fs.writeFileSync(isToDeleteDB_url, resetIdState); //reset ID state
         res.status(200).send({
           success: true,
           message: `ID removed from database is ${userId}`,
@@ -242,16 +246,24 @@ router.post("/remove-id-from-server", (req, res) => {
 //CHECK WITH SERVER IF IT IS OKAY TO CLEAR ALL REGISTERED IDS ON HARDWARE
 router.get("/should_i_delete_all_records", (req, res) => {
   try {
-    Database = JSON.parse(fs.readFileSync(registeredDB_url));
-    res.status(200).send({
-      success: true,
-      message: `Yes, delete all records from the database`,
-      data: {
-        reply: 1, //reply should be between 1 or 0
-        total_available_ids: 1000 - Number(Database?.ids?.length),
-        total_registered_ids: Database?.ids?.length,
-      },
-    });
+    const purgeState = JSON.parse(fs.readFileSync(purge_url));
+    if (purgeState?.state > 0) {
+      res.status(200).send({
+        success: true,
+        message: `Yes, delete all records from the database`,
+        data: {
+          reply: purgeState?.state, //reply should be between 1 or 0
+        },
+      });
+    } else {
+      res.status(200).send({
+        success: true,
+        message: `No, do not delete any record from the database`,
+        data: {
+          reply: purgeState?.state, //reply should be between 1 or 0
+        },
+      });
+    }
   } catch (err) {
     res.status(400).send({
       success: false,
@@ -291,6 +303,8 @@ router.post("/have_i_deleted_all_records", (req, res) => {
       });
 
       fs.writeFileSync(registeredDB_url, clearedDB);
+      const state_of_purge = JSON.stringify({ state: 0 });
+      fs.writeFileSync(purge_url, state_of_purge);
       //file written successfully
     } catch (err) {}
     res.status(201).send({

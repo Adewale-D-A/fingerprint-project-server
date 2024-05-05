@@ -199,3 +199,35 @@ total_verified_users: 0,
         }
 
 ```
+
+#### POST REQUEST: Set delete all data state from the admin
+
+> Endpoint: {{base_url}}`/set-purge-state`
+> Response:
+
+```
+{
+          success: true,
+        message: `System's purge has been set to 1`,
+          data: {
+            reply: 1, //either 1 or 0
+          },
+        }
+
+```
+
+#### GET REQUEST: View all verified users
+
+> Endpoint: {{base_url}}`all-verified-records`
+> Response:
+
+```
+{
+          success: true,
+      message: `returning all verified IDS in the DB`,
+          data: {
+        id_list: [],
+      },
+        }
+
+```
