@@ -5,6 +5,11 @@ const router = express.Router();
 const registeredDB_url = "./files/registered.json";
 const verifiedDB_url = "./files/verified.json";
 const isToDeleteDB_url = "./files/idToDelete.json";
+const purge_url = "./files/purgeState.json";
+
+//TODO: Logic to get dynamic variables for total available and registered IDS
+const total_available_ids = 543;
+const total_registered_ids = 422;
 
 //VIEW ALL REGISTERED IDS
 router.get("/all-registered-ids", (req, res) => {
@@ -86,6 +91,74 @@ router.post("/set-id-to-delete", (req, res) => {
   }
 });
 
+//SET PURGE STATE
+router.post("/set-purge-state", (req, res) => {
+  const { reply } = req.body; //1 or 0
+  if (Number(reply)) {
+    try {
+      const state_of_purge = JSON.stringify({ state: reply });
+      fs.writeFileSync(purge_url, state_of_purge);
+      res.status(200).send({
+        success: true,
+        message: `System's purge has been set to ${reply}`,
+        data: {
+          reply: reply, //either 1 or 0
+        },
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
+        message: "failed to set purge state",
+        data: {
+          reply: reply,
+        },
+      });
+    }
+  } else {
+    try {
+      const state_of_purge = JSON.stringify({ state: 0 });
+      fs.writeFileSync(purge_url, state_of_purge);
+      res.status(200).send({
+        success: true,
+        message: `System's purge has been set to ${0}`,
+        data: {
+          reply: 0, //either 1 or 0
+        },
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
+        message: "failed to set purge state",
+        data: {
+          reply: reply,
+        },
+      });
+    }
+  }
+});
+
+//DELETE ALL VERIFIED USERS' HISTORY
+router.get("/all-verified-records", (req, res) => {
+  try {
+    const Database = JSON.parse(fs.readFileSync(verifiedDB_url));
+    res.status(200).send({
+      success: true,
+      message: `returning all verified IDS in the DB`,
+      data: {
+        id_list: Database?.ids,
+      },
+    });
+  } catch (err) {
+    res.status(400).send({
+      success: false,
+      message: "fetching registered IDS failed",
+      data: {
+        id_list: [],
+      },
+    });
+  }
+});
+
 //DELETE ALL VERIFIED USERS' HISTORY
 router.post("/delete_all_verified_users_records", (req, res) => {
   const { reply } = req.body;
@@ -115,7 +188,7 @@ router.post("/delete_all_verified_users_records", (req, res) => {
     } catch (err) {}
     res.status(201).send({
       success: true,
-      message: `Hardware replied with ${reply}, all verified users' history have been cleared`,
+      message: `Admin replied with ${reply}, all verified users' history have been cleared`,
       data: {
         reply: reply,
         total_verified_users: 0,
