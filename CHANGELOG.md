@@ -1,3 +1,7 @@
+###### 4.16.2024
+
+> Hardware mode settings from server
+
 ###### 4.06.2024
 
 > ESP32 admin delete all data status functionality

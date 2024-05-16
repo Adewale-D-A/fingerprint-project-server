@@ -6,6 +6,7 @@ const registeredDB_url = "./files/registered.json";
 const verifiedDB_url = "./files/verified.json";
 const isToDeleteDB_url = "./files/idToDelete.json";
 const purge_url = "./files/purgeState.json";
+const mode_url = "./files//mode.json";
 
 //TODO: Logic to get dynamic variables for total available and registered IDS
 const total_available_ids = 543;
@@ -197,4 +198,47 @@ router.post("/delete_all_verified_users_records", (req, res) => {
   }
 });
 
+//DELETE ALL VERIFIED USERS' HISTORY
+router.post("/set_mode", (req, res) => {
+  const { mode_id } = req.body; //1,2,3,4 or > 4 for locking device
+  if (Number(mode_id)) {
+    try {
+      const mode_state = JSON.stringify({ mode: mode_id });
+      fs.writeFileSync(mode_url, mode_state);
+      res.status(200).send({
+        success: true,
+        message: `System mode has been set to ${mode_state} - ${
+          mode_id === 1
+            ? "regisration mode"
+            : mode_id === 2
+            ? "verification mode"
+            : mode_id === 3
+            ? "delete a user mode"
+            : mode_id === 4
+            ? "delete all users mode"
+            : "locked mode"
+        }`,
+        data: {
+          mode_id,
+        },
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
+        message: "mode failed to set",
+        data: {
+          mode_id,
+        },
+      });
+    }
+  } else {
+    res.status(404).send({
+      success: false,
+      message: "please enter a valid mode",
+      data: {
+        mode_id,
+      },
+    });
+  }
+});
 module.exports = router;

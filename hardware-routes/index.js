@@ -6,6 +6,7 @@ const registeredDB_url = "./files/registered.json";
 const verifiedDB_url = "./files/verified.json";
 const isToDeleteDB_url = "./files/idToDelete.json";
 const purge_url = "./files/purgeState.json";
+const mode_url = "./files//mode.json";
 //TODO: Logic to get dynamic variables for total available and registered IDS
 const total_available_ids = 543;
 const total_registered_ids = 422;
@@ -319,4 +320,36 @@ router.post("/have_i_deleted_all_records", (req, res) => {
   }
 });
 
+//GET MODE
+router.get("/mode", (req, res) => {
+  try {
+    const modeState = JSON.parse(fs.readFileSync(mode_url));
+    const mode_id = modeState?.mode;
+    res.status(200).send({
+      success: true,
+      message: `Device mode set to ${mode_id} - ${
+        mode_id === 1
+          ? "regisration mode"
+          : mode_id === 2
+          ? "verification mode"
+          : mode_id === 3
+          ? "delete a user mode"
+          : mode_id === 4
+          ? "delete all users mode"
+          : "locked mode"
+      }`,
+      data: {
+        mode_id,
+      },
+    });
+  } catch (err) {
+    res.status(400).send({
+      success: false,
+      message: "failed to retrieve mode, setting device to lock mode",
+      data: {
+        mode_id: 10,
+      },
+    });
+  }
+});
 module.exports = router;
