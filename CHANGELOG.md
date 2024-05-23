@@ -1,3 +1,7 @@
+###### 5.24.2024
+
+> Hardware source-code update
+
 ###### 4.16.2024
 
 > Hardware mode settings from server
