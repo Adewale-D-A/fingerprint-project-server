@@ -57,3 +57,21 @@ This server is written in Node, so technical knowledge of Node.js library is ess
       <td>enable cookie from browsers</td>
     </tr>
 </table>
+
+## SQL commands
+
+ <table>
+    <tr>
+      <th>Add new entry to table (students' table)</th>
+      <th>INSERT INTO students (firstname,lastname,matric_number, email, username, hardware_user_id, password)
+    VALUES("adewale","azeez","18/30GC027", "adewale.d.a@outlook.com", "ade", 44, "oluwadamilare");</th>
+    </tr>
+    <tr>
+      <th>Create table with auto timestamp</th>
+      <th>CREATE TABLE `table` (
+    ...
+    `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    ...
+)</th>
+    </tr>
+</table>

@@ -1,5 +1,8 @@
 const express = require("express");
 const fs = require("fs");
+const {
+  RetrieveStudentById,
+} = require("../../MySql/scripts/get_student_by_id");
 const router = express.Router();
 
 const registeredDB_url = "./files/registered.json";
@@ -75,51 +78,76 @@ router.post("/registered-id", (req, res) => {
 //ON USER VERIFICATION, TELL SERVER WHO WAS VERIFIED
 router.post("/verify-user", (req, res) => {
   const { userId } = req.body;
-  let student_data;
-  let VerificationDatabase;
   try {
-    VerificationDatabase = JSON.parse(fs.readFileSync(verifiedDB_url));
-  } catch (err) {
-    VerificationDatabase = { ids: [] };
-  }
-  if (!userId) {
-    res.status(404).send({
-      success: false,
-      message: "registered ID was not found",
-      data: {
-        verified_id: null,
-        total_verified_users: VerificationDatabase?.ids?.length,
-      },
-    });
-  } else {
-    try {
-      const randomMatric = Math.floor(Math.random() * 100) + 1;
-      const random_name = Math.random().toString(36).substring(2);
-      student_data = {
-        user_id: userId,
-        student_name: random_name,
-        matric_no: `18/30GC${randomMatric}`,
-      };
-      const verifiedList = JSON.parse(fs.readFileSync(verifiedDB_url));
-      const appended = JSON.stringify({
-        ids: [...verifiedList.ids, student_data],
+    if (userId) {
+      RetrieveStudentById({
+        response: res,
+        hardware_id: userId,
       });
-
-      fs.writeFileSync(verifiedDB_url, appended);
-      //file written successfully
-    } catch (err) {}
-    res.status(201).send({
-      success: true,
-      message: `Student name: ${student_data?.student_name} with Student ID: ${userId} was successfully verified`,
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "invalid request - userId is required",
+        data: {
+          userId: "firstname*",
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Ooops! Sorry, something went wrong.",
       data: {
-        verified_id: userId,
-        student_data: student_data,
-        total_available_ids:
-          1000 - (Number(VerificationDatabase?.ids?.length) + 1),
-        total_registered_ids: Number(VerificationDatabase?.ids?.length) + 1,
+        error: error,
       },
     });
   }
+
+  // let student_data;
+  // let VerificationDatabase;
+  // try {
+  //   VerificationDatabase = JSON.parse(fs.readFileSync(verifiedDB_url));
+  // } catch (err) {
+  //   VerificationDatabase = { ids: [] };
+  // }
+  // if (!userId) {
+  //   res.status(404).send({
+  //     success: false,
+  //     message: "registered ID was not found",
+  //     data: {
+  //       verified_id: null,
+  //       total_verified_users: VerificationDatabase?.ids?.length,
+  //     },
+  //   });
+  // } else {
+  //   try {
+  //     const randomMatric = Math.floor(Math.random() * 100) + 1;
+  //     const random_name = Math.random().toString(36).substring(2);
+  //     student_data = {
+  //       user_id: userId,
+  //       student_name: random_name,
+  //       matric_no: `18/30GC${randomMatric}`,
+  //     };
+  //     const verifiedList = JSON.parse(fs.readFileSync(verifiedDB_url));
+  //     const appended = JSON.stringify({
+  //       ids: [...verifiedList.ids, student_data],
+  //     });
+
+  //     fs.writeFileSync(verifiedDB_url, appended);
+  //     //file written successfully
+  //   } catch (err) {}
+  //   res.status(201).send({
+  //     success: true,
+  //     message: `Student name: ${student_data?.student_name} with Student ID: ${userId} was successfully verified`,
+  //     data: {
+  //       verified_id: userId,
+  //       student_data: student_data,
+  //       total_available_ids:
+  //         1000 - (Number(VerificationDatabase?.ids?.length) + 1),
+  //       total_registered_ids: Number(VerificationDatabase?.ids?.length) + 1,
+  //     },
+  //   });
+  // }
 });
 
 //SEND ID TO DELETE
