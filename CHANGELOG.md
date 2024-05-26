@@ -1,5 +1,6 @@
 ###### 5.26.2024
 
+> CORS domain listings
 > Database connections and setup
 > Device mode api development
 > Login api development
