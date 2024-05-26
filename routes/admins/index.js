@@ -1,5 +1,7 @@
 const express = require("express");
 const fs = require("fs");
+const { RetrieveAllStudents } = require("../../MySql/scripts/get_all_students");
+const { RegisterUser } = require("../../MySql/scripts/add_new_user");
 const router = express.Router();
 
 const registeredDB_url = "./files/registered.json";
@@ -12,32 +14,79 @@ const mode_url = "./files//mode.json";
 const total_available_ids = 543;
 const total_registered_ids = 422;
 
-//VIEW ALL REGISTERED IDS
-router.get("/all-registered-ids", (req, res) => {
+//POST REQUESTS
+
+// router.post("/login", (req, res) => {
+//   const {email, password
+//   } = req.body;
+
+//   if (email && password) {
+//     // console.log(req.cookies);
+//     queryLoginCredentials(username_email, password, res);
+//   } else {
+//     res.status(406).json({
+//       success: false,
+//       layer: "no username or password",
+//       message: "bad request body",
+//       payload_structure: {
+//         username_email: "required",
+//         password: "required",
+//       },
+//     });
+//   }
+// });
+
+router.post("/register-users", (req, res) => {
+  const {
+    firstname,
+    lastname,
+    matric_number,
+    email,
+    username,
+    password,
+    hardware_user_id,
+  } = req.body;
+
   try {
-    const Database = JSON.parse(fs.readFileSync(registeredDB_url));
-    res.status(200).send({
-      success: true,
-      message: `returning all registered IDS in the DB`,
-      data: {
-        id_list: Database?.ids,
-        total_available_ids: 1000 - Number(Database?.ids?.length),
-        total_registered_ids: Database?.ids?.length,
-      },
-    });
-  } catch (err) {
-    res.status(400).send({
+    if (firstname && matric_number && password && hardware_user_id) {
+      RegisterUser({
+        response: res,
+        firstname,
+        lastname,
+        matric_number,
+        email,
+        username,
+        password,
+        hardware_user_id,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message:
+          "invalid request - firstname, matric_number, hardware_user_id and password are required",
+        data: {
+          firstname: "firstname*",
+          lastname: "lastname",
+          matric_number: "matric number*",
+          email: "email",
+          username: "username",
+          password: "password*",
+          hardware_user_id: "hardware ID*",
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
       success: false,
-      message: "fetching registered IDS failed",
+      message: "Ooops! Sorry, something went wrong.",
       data: {
-        id_list: [],
-        total_available_ids: total_available_ids,
-        total_registered_ids: total_registered_ids,
+        error: error,
       },
     });
   }
 });
 
+//HARDWARE REQUESTS
 //SET ID TO DELETE
 router.post("/set-id-to-delete", (req, res) => {
   const { userId } = req.body;
@@ -139,28 +188,6 @@ router.post("/set-purge-state", (req, res) => {
 });
 
 //DELETE ALL VERIFIED USERS' HISTORY
-router.get("/all-verified-records", (req, res) => {
-  try {
-    const Database = JSON.parse(fs.readFileSync(verifiedDB_url));
-    res.status(200).send({
-      success: true,
-      message: `returning all verified IDS in the DB`,
-      data: {
-        id_list: Database?.ids,
-      },
-    });
-  } catch (err) {
-    res.status(400).send({
-      success: false,
-      message: "fetching registered IDS failed",
-      data: {
-        id_list: [],
-      },
-    });
-  }
-});
-
-//DELETE ALL VERIFIED USERS' HISTORY
 router.post("/delete_all_verified_users_records", (req, res) => {
   const { reply } = req.body;
   let VerificationDatabase;
@@ -209,7 +236,7 @@ router.post("/set_mode", (req, res) => {
         success: true,
         message: `System mode has been set to ${mode_state} - ${
           mode_id === 1
-            ? "regisration mode"
+            ? "registration mode"
             : mode_id === 2
             ? "verification mode"
             : mode_id === 3
@@ -241,4 +268,57 @@ router.post("/set_mode", (req, res) => {
     });
   }
 });
+
+//GET REQUESTS
+//DELETE ALL VERIFIED USERS' HISTORY
+router.get("/all-verified-records", (req, res) => {
+  try {
+    const Database = JSON.parse(fs.readFileSync(verifiedDB_url));
+    res.status(200).send({
+      success: true,
+      message: `returning all verified IDS in the DB`,
+      data: {
+        id_list: Database?.ids,
+      },
+    });
+  } catch (err) {
+    res.status(400).send({
+      success: false,
+      message: "fetching registered IDS failed",
+      data: {
+        id_list: [],
+      },
+    });
+  }
+});
+
+router.get("/all_students", (req, res) => {
+  RetrieveAllStudents({ response: res });
+});
+//VIEW ALL REGISTERED IDS
+router.get("/all-registered-ids", (req, res) => {
+  try {
+    const Database = JSON.parse(fs.readFileSync(registeredDB_url));
+    res.status(200).send({
+      success: true,
+      message: `returning all registered IDS in the DB`,
+      data: {
+        id_list: Database?.ids,
+        total_available_ids: 1000 - Number(Database?.ids?.length),
+        total_registered_ids: Database?.ids?.length,
+      },
+    });
+  } catch (err) {
+    res.status(400).send({
+      success: false,
+      message: "fetching registered IDS failed",
+      data: {
+        id_list: [],
+        total_available_ids: total_available_ids,
+        total_registered_ids: total_registered_ids,
+      },
+    });
+  }
+});
+
 module.exports = router;

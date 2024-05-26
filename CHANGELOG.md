@@ -1,3 +1,11 @@
+###### 5.26.2024
+
+> Database connections and setup
+> Device mode api development
+> Login api development
+> Students registration api development
+> Students verification api development
+
 ###### 5.24.2024
 
 > Hardware source-code update
