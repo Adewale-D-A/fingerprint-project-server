@@ -10,7 +10,7 @@ const app = express();
 app.use(
   cors({
     origin: ["*", process.env.LOCALHOST, process.env.FRONTEND_DOMAIN],
-    credentials: true,
+    credentials: false,
   })
 );
 
