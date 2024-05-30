@@ -1,6 +1,12 @@
 const db = require("../../config/create_connection");
+const { UpdateLecturerRecord } = require("./update_lecturer_record");
 
-async function AddCourseStudents({ response, students, course_code }) {
+async function AddCourseStudents({
+  response,
+  students,
+  course_code,
+  auth_user,
+}) {
   try {
     db.connect((err) => {
       if (err) {
@@ -11,7 +17,7 @@ async function AddCourseStudents({ response, students, course_code }) {
         });
       } else {
         db.query(
-          `INSERT INTO ${course_code} (matric_number, fullname) VALUES (?)`,
+          `INSERT INTO ${course_code} (matric_number, fullname) VALUES ?`,
           [
             students.map((student) => [
               student.matric_number,
@@ -26,11 +32,7 @@ async function AddCourseStudents({ response, students, course_code }) {
                 data: err,
               });
             } else {
-              response.status(201).send({
-                success: true,
-                message: "students successfully added to course",
-                data: {},
-              });
+              UpdateLecturerRecord({ response, course_code, auth_user });
             }
           }
         );

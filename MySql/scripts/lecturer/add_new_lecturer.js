@@ -5,7 +5,6 @@ async function RegisterLecturer({
   firstname,
   lastname,
   title,
-  courses,
   email,
   username,
   password,
@@ -20,12 +19,11 @@ async function RegisterLecturer({
         });
       } else {
         db.query(
-          `INSERT INTO lecturers (firstname, lastname,title, courses, email, password, username) VALUES (?, ?, ?, ?, ?, ?, ? );`,
+          `INSERT INTO lecturers (firstname, lastname,title, email, password, username) VALUES (?, ?, ?, ?, ?, ?, ? );`,
           [
             firstname.toLowerCase(),
             lastname.toLowerCase(),
             title.toLowerCase(),
-            courses,
             email.toLowerCase(),
             password,
             username.toLowerCase(),
@@ -45,7 +43,6 @@ async function RegisterLecturer({
                   firstname: firstname,
                   lastname: lastname,
                   title: title,
-                  courses: courses,
                   email: email,
                   username: username,
                 },

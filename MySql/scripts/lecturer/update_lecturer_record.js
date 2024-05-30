@@ -1,7 +1,6 @@
 const db = require("../../config/create_connection");
-const { AddCourseStudents } = require("./add_course_students");
 
-function CreateCourse({ response, course_code, students, auth_user }) {
+async function UpdateLecturerRecord({ response, course_code, auth_user }) {
   try {
     db.connect((err) => {
       if (err) {
@@ -12,7 +11,7 @@ function CreateCourse({ response, course_code, students, auth_user }) {
         });
       } else {
         db.query(
-          `CREATE TABLE ${course_code} (id INT NOT NULL AUTO_INCREMENT,matric_number VARCHAR(45) NOT NULL,fullname VARCHAR(100) NOT NULL,PRIMARY KEY (id),UNIQUE INDEX matric_number_UNIQUE (matric_number ASC) VISIBLE,UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE)`,
+          `UPDATE lecturers SET courses = "${course_code}" WHERE email = "${auth_user?.email}";`,
           (err, result) => {
             if (err) {
               response.status(400).send({
@@ -21,11 +20,10 @@ function CreateCourse({ response, course_code, students, auth_user }) {
                 data: err,
               });
             } else {
-              AddCourseStudents({
-                response: response,
-                students: students,
-                course_code: course_code,
-                auth_user,
+              response.status(201).send({
+                success: true,
+                message: "students successfully added to course",
+                data: {},
               });
             }
           }
@@ -40,4 +38,4 @@ function CreateCourse({ response, course_code, students, auth_user }) {
     });
   }
 }
-exports.CreateCourse = CreateCourse;
+exports.UpdateLecturerRecord = UpdateLecturerRecord;
