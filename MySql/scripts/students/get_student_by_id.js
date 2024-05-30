@@ -1,4 +1,4 @@
-const db = require("../config/create_connection");
+const db = require("../../config/create_connection");
 const { VerifyUser } = require("./verify_user");
 
 async function RetrieveStudentById({ response, hardware_id }) {

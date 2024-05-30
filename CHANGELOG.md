@@ -1,3 +1,8 @@
+###### 5.31.2024
+
+> Admin and lecturer login API development
+> Lecturer's course registration API development
+
 ###### 5.26.2024
 
 > CORS domain listings

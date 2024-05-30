@@ -2,7 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const {
   RetrieveStudentById,
-} = require("../../MySql/scripts/get_student_by_id");
+} = require("../../MySql/scripts/students/get_student_by_id");
 const router = express.Router();
 
 const registeredDB_url = "./files/registered.json";
