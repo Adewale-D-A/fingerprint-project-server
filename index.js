@@ -22,6 +22,7 @@ app.use(express.json());
 const hardware_routes = require("./routes/hardware/index");
 const admin_routes = require("./routes/admins/index");
 const student_routes = require("./routes/students/index");
+const lecturer_routes = require("./routes/lecturers/index");
 
 //all routes to fingerprint's hardware
 app.use("/hardware", hardware_routes);
@@ -29,6 +30,8 @@ app.use("/hardware", hardware_routes);
 app.use("/admins", admin_routes);
 //student's tasks routes
 app.use("/students", student_routes);
+//lecturers' tasks routes
+app.use("/lecturers", lecturer_routes);
 
 //endpoint home
 app.get("/", (req, res) => {

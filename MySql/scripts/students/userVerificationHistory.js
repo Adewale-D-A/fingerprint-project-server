@@ -1,4 +1,4 @@
-const db = require("../config/create_connection");
+const db = require("../../config/create_connection");
 
 async function UserVerificationHistory({ response, matric_number }) {
   try {

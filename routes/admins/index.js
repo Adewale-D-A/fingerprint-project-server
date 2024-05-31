@@ -1,7 +1,14 @@
 const express = require("express");
 const fs = require("fs");
-const { RetrieveAllStudents } = require("../../MySql/scripts/get_all_students");
-const { RegisterUser } = require("../../MySql/scripts/add_new_user");
+const {
+  RetrieveAllStudents,
+} = require("../../MySql/scripts/students/get_all_students");
+const { RegisterUser } = require("../../MySql/scripts/students/add_new_user");
+const {
+  RegisterLecturer,
+} = require("../../MySql/scripts/lecturer/add_new_lecturer");
+const { RegisterAdmin } = require("../../MySql/scripts/admin/add_new_admin");
+const { AdminLogin } = require("../../MySql/scripts/admin/login_admin");
 const router = express.Router();
 
 const registeredDB_url = "./files/registered.json";
@@ -36,6 +43,46 @@ const total_registered_ids = 422;
 //   }
 // });
 
+router.post("/register-admins", (req, res) => {
+  const { firstname, lastname, email, password, username, privilege } =
+    req.body;
+
+  try {
+    if (firstname && lastname && email && password && username && privilege) {
+      RegisterAdmin({
+        response: res,
+        firstname,
+        lastname,
+        privilege,
+        email,
+        username,
+        password,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message:
+          "invalid request - firstname, lastname,email,username, priveledge and password are required",
+        data: {
+          firstname: "firstname*",
+          lastname: "lastname",
+          priviledge: "number*",
+          email: "email",
+          username: "username",
+          password: "password*",
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Ooops! Sorry, something went wrong.",
+      data: {
+        error: error,
+      },
+    });
+  }
+});
 router.post("/register-users", (req, res) => {
   const {
     firstname,
@@ -81,6 +128,63 @@ router.post("/register-users", (req, res) => {
       message: "Ooops! Sorry, something went wrong.",
       data: {
         error: error,
+      },
+    });
+  }
+});
+
+router.post("/register-lecturers", (req, res) => {
+  const { firstname, lastname, title, email, password, username } = req.body;
+  try {
+    if (firstname && lastname && title && email && password && username) {
+      RegisterLecturer({
+        response: res,
+        firstname,
+        lastname,
+        title,
+        courses,
+        email,
+        password,
+        username,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message:
+          "invalid request - firstname, lastname, courses, title and password are required",
+        data: {
+          firstname: "firstname*",
+          lastname: "lastname",
+          email: "email",
+          username: "username",
+          password: "password*",
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Ooops! Sorry, something went wrong.",
+      data: {
+        error: error,
+      },
+    });
+  }
+});
+
+//Admin Login REQUESTS
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  if (email && password) {
+    AdminLogin({ email, password, response: res });
+  } else {
+    res.status(406).json({
+      success: false,
+      layer: "no username or password",
+      message: "bad request body",
+      payload_structure: {
+        email: "required",
+        password: "required",
       },
     });
   }
@@ -228,25 +332,26 @@ router.post("/delete_all_verified_users_records", (req, res) => {
 //DELETE ALL VERIFIED USERS' HISTORY
 router.post("/set_mode", (req, res) => {
   const { mode_id } = req.body; //1,2,3,4 or > 4 for locking device
-  if (Number(mode_id)) {
+  const modeNumber = Number(mode_id);
+  if (modeNumber) {
     try {
       const mode_state = JSON.stringify({ mode: mode_id });
       fs.writeFileSync(mode_url, mode_state);
       res.status(200).send({
         success: true,
-        message: `System mode has been set to ${mode_state} - ${
-          mode_id === 1
+        message: `System mode has been set to ${
+          modeNumber === 1
             ? "registration mode"
-            : mode_id === 2
+            : modeNumber === 2
             ? "verification mode"
-            : mode_id === 3
+            : modeNumber === 3
             ? "delete a user mode"
-            : mode_id === 4
+            : modeNumber === 4
             ? "delete all users mode"
             : "locked mode"
         }`,
         data: {
-          mode_id,
+          modeNumber,
         },
       });
     } catch (error) {
@@ -254,7 +359,7 @@ router.post("/set_mode", (req, res) => {
         success: false,
         message: "mode failed to set",
         data: {
-          mode_id,
+          modeNumber,
         },
       });
     }
@@ -263,7 +368,7 @@ router.post("/set_mode", (req, res) => {
       success: false,
       message: "please enter a valid mode",
       data: {
-        mode_id,
+        modeNumber,
       },
     });
   }

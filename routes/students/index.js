@@ -1,10 +1,10 @@
 const express = require("express");
 const fs = require("fs");
 const { VerifyToken } = require("../../JWT/verification");
-const { UserLogin } = require("../../MySql/scripts/login_user");
+const { UserLogin } = require("../../MySql/scripts/students/login_user");
 const {
   UserVerificationHistory,
-} = require("../../MySql/scripts/userVerificationHistory");
+} = require("../../MySql/scripts/students/userVerificationHistory");
 const router = express.Router();
 
 //POST REQUESTS

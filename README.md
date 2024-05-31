@@ -68,10 +68,22 @@ This server is written in Node, so technical knowledge of Node.js library is ess
     </tr>
     <tr>
       <th>Create table with auto timestamp</th>
-      <th>CREATE TABLE `table` (
-    ...
-    `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-    ...
-)</th>
+      <th>CREATE TABLE `users`.`lecturers` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `firstname` VARCHAR(50) NOT NULL,
+  `lastname` VARCHAR(50) NULL,
+  `title` VARCHAR(20) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `courses` JSON NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`updated_At` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+</th>
+<tr>
+      <th>Alter table by adding a column</th>
+      <th>ALTER TABLE `users`.`lecturers` 
+ADD COLUMN `password` VARCHAR(50) NOT NULL AFTER `email`;
+</th>
     </tr>
 </table>
