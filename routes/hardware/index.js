@@ -3,10 +3,13 @@ const fs = require("fs");
 const {
   RetrieveStudentById,
 } = require("../../MySql/scripts/students/get_student_by_id");
+const { SuggestId } = require("../../MySql/scripts/admin/suggest_id");
+const {
+  ChangeSuggestIdStatus,
+} = require("../../MySql/scripts/admin/update_suggest_id_status");
 const router = express.Router();
 
 const registeredDB_url = "./files/registered.json";
-const verifiedDB_url = "./files/verified.json";
 const isToDeleteDB_url = "./files/idToDelete.json";
 const purge_url = "./files/purgeState.json";
 const mode_url = "./files//mode.json";
@@ -16,60 +19,20 @@ const total_registered_ids = 422;
 
 //SUGGEST AN ID TO THE FINGERPRINT HARDWARE
 router.get("/suggested-id", (req, res) => {
-  const suggested_id = Math.floor(Math.random() * 1000) + 1;
-  let Database;
-  try {
-    Database = JSON.parse(fs.readFileSync(registeredDB_url));
-  } catch (err) {
-    Database = { ids: [] };
-  }
-  res.status(200).send({
-    success: true,
-    message: `returning suggested ID in data ${suggested_id}`,
-    data: {
-      suggested_id: suggested_id,
-      total_available_ids: 1000 - Number(Database?.ids?.length),
-      total_registered_ids: Database?.ids?.length,
-    },
-  });
+  SuggestId({ response: res });
 });
 
 //REGISTER AN ID POSTED BY THE HARDWARE
 router.post("/registered-id", (req, res) => {
   const { userId } = req.body;
-  let Database;
-  try {
-    Database = JSON.parse(fs.readFileSync(registeredDB_url));
-  } catch (err) {
-    Database = { ids: [] };
-  }
-  if (!userId) {
-    res.status(404).send({
-      success: false,
-      message: "resgistered ID was not found",
-      data: {
-        registered_id: null,
-        total_available_ids: 1000 - Number(Database?.ids?.length),
-        total_registered_ids: Database?.ids?.length,
-      },
-    });
+  if (userId) {
+    ChangeSuggestIdStatus({ response: res, registered_id: Number(userId) });
   } else {
-    try {
-      const resgistedList = JSON.parse(fs.readFileSync(registeredDB_url));
-      const appended = JSON.stringify({
-        ids: [...resgistedList.ids, userId],
-      });
-
-      fs.writeFileSync(registeredDB_url, appended);
-      //file written successfully
-    } catch (err) {}
-    res.status(201).send({
-      success: true,
-      message: `ID - ${userId} successfully registered`,
+    res.status(400).send({
+      success: false,
+      message: "invalid request - userId is required",
       data: {
-        registered_id: userId,
-        total_available_ids: 1000 - (Number(Database?.ids?.length) + 1),
-        total_registered_ids: Number(Database?.ids?.length) + 1,
+        userId: "registered id",
       },
     });
   }

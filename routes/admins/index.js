@@ -332,25 +332,26 @@ router.post("/delete_all_verified_users_records", (req, res) => {
 //DELETE ALL VERIFIED USERS' HISTORY
 router.post("/set_mode", (req, res) => {
   const { mode_id } = req.body; //1,2,3,4 or > 4 for locking device
-  if (Number(mode_id)) {
+  const modeNumber = Number(mode_id);
+  if (modeNumber) {
     try {
       const mode_state = JSON.stringify({ mode: mode_id });
       fs.writeFileSync(mode_url, mode_state);
       res.status(200).send({
         success: true,
-        message: `System mode has been set to ${mode_state} - ${
-          mode_id === 1
+        message: `System mode has been set to ${
+          modeNumber === 1
             ? "registration mode"
-            : mode_id === 2
+            : modeNumber === 2
             ? "verification mode"
-            : mode_id === 3
+            : modeNumber === 3
             ? "delete a user mode"
-            : mode_id === 4
+            : modeNumber === 4
             ? "delete all users mode"
             : "locked mode"
         }`,
         data: {
-          mode_id,
+          modeNumber,
         },
       });
     } catch (error) {
@@ -358,7 +359,7 @@ router.post("/set_mode", (req, res) => {
         success: false,
         message: "mode failed to set",
         data: {
-          mode_id,
+          modeNumber,
         },
       });
     }
@@ -367,7 +368,7 @@ router.post("/set_mode", (req, res) => {
       success: false,
       message: "please enter a valid mode",
       data: {
-        mode_id,
+        modeNumber,
       },
     });
   }

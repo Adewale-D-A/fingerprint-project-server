@@ -1,4 +1,5 @@
 const db = require("../../config/create_connection");
+const { SyncPreviousId } = require("../admin/update_previous_id");
 
 async function RegisterUser({
   response,
@@ -38,6 +39,7 @@ async function RegisterUser({
                 data: err,
               });
             } else {
+              SyncPreviousId();
               response.status(201).send({
                 success: true,
                 message: "user registered successfully",

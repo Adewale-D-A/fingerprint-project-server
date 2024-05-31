@@ -1,14 +1,8 @@
 const db = require("../../config/create_connection");
 
-async function VerifyUser({
-  response,
-  user_table_id,
-  matric_number,
-  firstname,
-  hardware_id,
-}) {
+async function ChangeSuggestIdStatus({ response, registered_id }) {
   try {
-    db.connect(async (err) => {
+    db.connect((err) => {
       if (err) {
         response.status(400).send({
           success: false,
@@ -17,8 +11,9 @@ async function VerifyUser({
         });
       } else {
         db.query(
-          `INSERT INTO verified_users (user_table_id, matric_number) VALUES (?, ?);`,
-          [Number(user_table_id), matric_number.toLowerCase()],
+          `UPDATE suggest_id SET status = true, suggest_id = ${
+            Number(registered_id) + 1
+          } WHERE id = 1;`,
           (err, result) => {
             if (err) {
               response.status(400).send({
@@ -27,16 +22,12 @@ async function VerifyUser({
                 data: err,
               });
             } else {
-              response.status(200).send({
+              response.status(201).send({
                 success: true,
-                message: `Student name: ${firstname} with Matric Number: ${matric_number} was successfully verified`,
+                message: `ID - ${registered_id} successfully registered`,
                 data: {
-                  verified_id: hardware_id,
-                  student_data: {
-                    user_id: hardware_id,
-                    student_name: firstname,
-                    matric_no: matric_number,
-                  },
+                  registered_id: registered_id,
+                  suggest_id_status: true,
                 },
               });
             }
@@ -52,4 +43,4 @@ async function VerifyUser({
     });
   }
 }
-exports.VerifyUser = VerifyUser;
+exports.ChangeSuggestIdStatus = ChangeSuggestIdStatus;

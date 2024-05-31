@@ -1,5 +1,6 @@
 ###### 5.31.2024
 
+> Admin student registeration API development
 > Admin and lecturer login API development
 > Lecturer's course registration API development
 
