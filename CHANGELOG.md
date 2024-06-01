@@ -1,3 +1,7 @@
+###### 6.1.2024
+
+> Mode setting
+
 ###### 5.31.2024
 
 > Admin student registeration API development
