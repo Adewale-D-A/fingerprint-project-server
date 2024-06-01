@@ -1,5 +1,6 @@
 ###### 6.1.2024
 
+> chat assistant server code implementation
 > Mode setting
 
 ###### 5.31.2024
