@@ -332,7 +332,7 @@ router.get("/mode", (req, res) => {
           : "locked mode"
       }`,
       data: {
-        mode_id: `${modeNumber}`,
+        mode_id: modeNumber,
       },
     });
   } catch (err) {
