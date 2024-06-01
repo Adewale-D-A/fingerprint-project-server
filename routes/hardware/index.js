@@ -316,21 +316,23 @@ router.get("/mode", (req, res) => {
   try {
     const modeState = JSON.parse(fs.readFileSync(mode_url));
     const mode_id = modeState?.mode;
+    const modeNumber = Number(mode_id);
+
     res.status(200).send({
       success: true,
-      message: `Device mode set to ${mode_id} - ${
-        mode_id === 1
+      message: `Device mode set to ${modeNumber} - ${
+        modeNumber === 1
           ? "regisration mode"
-          : mode_id === 2
+          : modeNumber === 2
           ? "verification mode"
-          : mode_id === 3
+          : modeNumber === 3
           ? "delete a user mode"
-          : mode_id === 4
+          : modeNumber === 4
           ? "delete all users mode"
           : "locked mode"
       }`,
       data: {
-        mode_id,
+        mode_id: `${modeNumber}`,
       },
     });
   } catch (err) {
