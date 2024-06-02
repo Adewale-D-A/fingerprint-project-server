@@ -1,10 +1,12 @@
 ###### 6.2.2024
 
+> Mode, delete by ID and delete all reply format update
 > Fetch request for verified students based on verification time range
 > fingperint index for newly registered Users api update
 
 ###### 6.1.2024
 
+> chat assistant server code implementation
 > Mode setting
 
 ###### 5.31.2024

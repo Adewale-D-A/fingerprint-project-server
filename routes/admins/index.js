@@ -211,8 +211,9 @@ router.post("/set-id-to-delete", (req, res) => {
       student_name: random_name,
       matric_no: `18/30GC${randomMatric}`,
     };
+    const numberId = Number(userId);
     try {
-      const addedId = JSON.stringify({ id: userId });
+      const addedId = JSON.stringify({ id: numberId });
       fs.writeFileSync(isToDeleteDB_url, addedId);
       res.status(200).send({
         success: true,
@@ -250,9 +251,10 @@ router.post("/set-id-to-delete", (req, res) => {
 //SET PURGE STATE
 router.post("/set-purge-state", (req, res) => {
   const { reply } = req.body; //1 or 0
+  const numberReply = Number(reply);
   if (Number(reply)) {
     try {
-      const state_of_purge = JSON.stringify({ state: reply });
+      const state_of_purge = JSON.stringify({ state: numberReply });
       fs.writeFileSync(purge_url, state_of_purge);
       res.status(200).send({
         success: true,
@@ -266,7 +268,7 @@ router.post("/set-purge-state", (req, res) => {
         success: false,
         message: "failed to set purge state",
         data: {
-          reply: reply,
+          reply: numberReply,
         },
       });
     }

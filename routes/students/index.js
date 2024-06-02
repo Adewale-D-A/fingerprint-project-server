@@ -5,6 +5,7 @@ const { UserLogin } = require("../../MySql/scripts/students/login_user");
 const {
   UserVerificationHistory,
 } = require("../../MySql/scripts/students/userVerificationHistory");
+const { ChatAssistant } = require("../../chat");
 const router = express.Router();
 
 //POST REQUESTS
@@ -47,6 +48,23 @@ router.get("/verification-history", (req, res) => {
       message: "Ooops! Sorry, something went wrong.",
       data: {
         error: error,
+      },
+    });
+  }
+});
+
+//POST REQUESTS
+router.post("/chat-assitant", (req, res) => {
+  const { message } = req.body;
+  if (message) {
+    ChatAssistant({ message, response: res });
+  } else {
+    res.status(406).json({
+      success: false,
+      layer: "no message",
+      message: "bad request body",
+      payload_structure: {
+        message: "required*",
       },
     });
   }
