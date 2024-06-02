@@ -1,5 +1,5 @@
 const db = require("../../config/create_connection");
-const { SyncPreviousId } = require("../admin/update_previous_id");
+const { SyncPreviousId } = require("./update_previous_id");
 
 async function RegisterUser({
   response,
@@ -10,6 +10,7 @@ async function RegisterUser({
   username,
   password,
   hardware_user_id,
+  registered_index,
 }) {
   try {
     db.connect((err) => {
@@ -21,7 +22,7 @@ async function RegisterUser({
         });
       } else {
         db.query(
-          `INSERT INTO students (firstname, lastname,matric_number, email, username, hardware_user_id, password) VALUES (?, ?, ?, ?, ?, ?, ? );`,
+          `INSERT INTO students (firstname, lastname,matric_number, email, username, hardware_user_id, password, registered_index) VALUES (?, ?, ?, ?, ?, ?, ? );`,
           [
             firstname.toLowerCase(),
             lastname.toLowerCase(),
@@ -30,6 +31,7 @@ async function RegisterUser({
             username.toLowerCase(),
             hardware_user_id,
             password,
+            registered_index?.toLowerCase(),
           ],
           (err, result) => {
             if (err) {

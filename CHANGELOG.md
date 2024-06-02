@@ -1,3 +1,8 @@
+###### 6.2.2024
+
+> Fetch request for verified students based on verification time range
+> fingperint index for newly registered Users api update
+
 ###### 6.1.2024
 
 > chat assistant server code implementation
