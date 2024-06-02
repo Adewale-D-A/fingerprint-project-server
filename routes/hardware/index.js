@@ -189,7 +189,7 @@ router.post("/remove-id-from-server", (req, res) => {
           ids: newDBcopy,
         });
 
-        const resetIdState = JSON.stringify({ id: "" });
+        const resetIdState = JSON.stringify({ id: 0 });
 
         fs.writeFileSync(registeredDB_url, removedId);
         fs.writeFileSync(isToDeleteDB_url, resetIdState); //reset ID state
@@ -244,7 +244,7 @@ router.get("/should_i_delete_all_records", (req, res) => {
         success: true,
         message: `Yes, delete all records from the database`,
         data: {
-          reply: purgeState?.state, //reply should be between 1 or 0
+          reply: Number(purgeState?.state), //reply should be between 1 or 0
         },
       });
     } else {
@@ -252,7 +252,7 @@ router.get("/should_i_delete_all_records", (req, res) => {
         success: true,
         message: `No, do not delete any record from the database`,
         data: {
-          reply: purgeState?.state, //reply should be between 1 or 0
+          reply: Number(purgeState?.state), //reply should be between 1 or 0
         },
       });
     }
