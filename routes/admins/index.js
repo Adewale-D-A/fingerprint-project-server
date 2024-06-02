@@ -3,7 +3,7 @@ const fs = require("fs");
 const {
   RetrieveAllStudents,
 } = require("../../MySql/scripts/students/get_all_students");
-const { RegisterUser } = require("../../MySql/scripts/students/add_new_user");
+const { RegisterUser } = require("../../MySql/scripts/admin/add_new_user");
 const {
   RegisterLecturer,
 } = require("../../MySql/scripts/lecturer/add_new_lecturer");
@@ -92,6 +92,7 @@ router.post("/register-users", (req, res) => {
     username,
     password,
     hardware_user_id,
+    registered_index,
   } = req.body;
 
   try {
@@ -105,6 +106,7 @@ router.post("/register-users", (req, res) => {
         username,
         password,
         hardware_user_id,
+        registered_index: registered_index ? registered_index : "N/A",
       });
     } else {
       res.status(404).send({
