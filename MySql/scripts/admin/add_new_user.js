@@ -22,7 +22,7 @@ async function RegisterUser({
         });
       } else {
         db.query(
-          `INSERT INTO students (firstname, lastname,matric_number, email, username, hardware_user_id, password, registered_index) VALUES (?, ?, ?, ?, ?, ?, ? );`,
+          `INSERT INTO students (firstname, lastname,matric_number, email, username, hardware_user_id, password, registered_index) VALUES (?, ?, ?, ?, ?, ?, ?, ? );`,
           [
             firstname.toLowerCase(),
             lastname.toLowerCase(),

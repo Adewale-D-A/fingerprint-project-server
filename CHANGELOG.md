@@ -1,5 +1,6 @@
 ###### 6.2.2024
 
+> User registration bug fix
 > Mode, delete by ID and delete all reply format update
 > Fetch request for verified students based on verification time range
 > fingperint index for newly registered Users api update
