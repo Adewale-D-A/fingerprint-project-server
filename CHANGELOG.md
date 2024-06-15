@@ -1,3 +1,7 @@
+###### 6.15.2024
+
+> Lecturer's registered students attendance histories data queries
+
 ###### 6.2.2024
 
 > User registration bug fix

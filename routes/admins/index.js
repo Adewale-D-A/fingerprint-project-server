@@ -136,9 +136,18 @@ router.post("/register-users", (req, res) => {
 });
 
 router.post("/register-lecturers", (req, res) => {
-  const { firstname, lastname, title, email, password, username } = req.body;
+  const { firstname, lastname, title, courses, email, password, username } =
+    req.body;
   try {
-    if (firstname && lastname && title && email && password && username) {
+    if (
+      firstname &&
+      lastname &&
+      title &&
+      courses &&
+      email &&
+      password &&
+      username
+    ) {
       RegisterLecturer({
         response: res,
         firstname,
@@ -158,6 +167,7 @@ router.post("/register-lecturers", (req, res) => {
           firstname: "firstname*",
           lastname: "lastname",
           email: "email",
+          courses: "courses*",
           username: "username",
           password: "password*",
         },

@@ -29,7 +29,7 @@ function LecturerLogin({ response, email, password }) {
                     firstname: user_data?.firstname,
                     lastname: user_data?.lastname,
                     title: user_data?.title,
-                    courses: user_data?.courses, // object of courses
+                    courses: user_data?.courses?.replace(/\s/g, "")?.split(","), // object of courses
                     username: user_data?.username,
                     email: user_data?.email,
                     role: "lecturer",

@@ -1,6 +1,11 @@
 const db = require("../../config/create_connection");
 
-async function AttendanceHistory({ response, start_date_time, end_date_time }) {
+async function AttendanceHistory({
+  response,
+  course_code,
+  start_date_time,
+  end_date_time,
+}) {
   try {
     db.connect(async (err) => {
       if (err) {
@@ -11,8 +16,7 @@ async function AttendanceHistory({ response, start_date_time, end_date_time }) {
         });
       } else {
         db.query(
-          `SELECT * FROM verified_users WHERE timestamp between '${start_date_time}' and '${end_date_time}' 
-            order by timestamp desc;`,
+          `SELECT MIN(verified_users.id) as id, MIN(user_table_id) as user_table_id, MIN(verified_users.matric_number) as matric_number, MIN(timestamp) as timestamp, MIN(fullname) as fullname FROM verified_users JOIN ${course_code} ON verified_users.matric_number = ${course_code}.matric_number WHERE timestamp between '${start_date_time}' and '${end_date_time}' group by verified_users.matric_number order by MIN(verified_users.timestamp) desc;`,
           (err, result) => {
             if (err) {
               response.status(400).send({
@@ -21,6 +25,7 @@ async function AttendanceHistory({ response, start_date_time, end_date_time }) {
                 data: err,
               });
             } else {
+              console.log({ result });
               response.status(200).send({
                 success: true,
                 message: "History successfully retrieved",
