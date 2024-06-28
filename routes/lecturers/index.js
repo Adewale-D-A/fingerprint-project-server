@@ -82,6 +82,7 @@ router.post("/attendance-history", (req, res) => {
           response: res,
           start_date_time,
           end_date_time,
+          course_code,
         });
       }
     } else {
