@@ -25,7 +25,6 @@ async function AttendanceHistory({
                 data: err,
               });
             } else {
-              console.log({ result });
               response.status(200).send({
                 success: true,
                 message: "History successfully retrieved",

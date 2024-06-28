@@ -9,7 +9,12 @@ const app = express();
 // app.use(cors());
 app.use(
   cors({
-    origin: ["*", process.env.LOCALHOST, process.env.FRONTEND_DOMAIN],
+    origin: [
+      "*",
+      process.env.LOCALHOST,
+      process.env.LOCALHOST_1,
+      process.env.FRONTEND_DOMAIN,
+    ],
     credentials: false,
   })
 );
