@@ -1,3 +1,7 @@
+###### 08.04.2024
+
+> Search user by matric number query
+
 ###### 6.28.2024
 
 > Lecturer registration bug fix

@@ -31,7 +31,7 @@ function UserLogin({ response, matric_number, password }) {
                     matric_number: user_data?.matric_number,
                     username: user_data?.username,
                     email: user_data?.email,
-                    hardware_user_id: user_data?.username,
+                    hardware_user_id: user_data?.hardware_user_id,
                     role: "student",
                   };
                   const acessToken = AuthenticateUser({
@@ -43,7 +43,7 @@ function UserLogin({ response, matric_number, password }) {
                     data: {
                       access_token: acessToken,
                       matric_number: user_data.matric_number,
-                      hardware_user_id: user_data?.username,
+                      hardware_user_id: user_data?.hardware_user_id,
                       user: user_profile,
                     },
                   });

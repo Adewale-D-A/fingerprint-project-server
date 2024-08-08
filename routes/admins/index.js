@@ -9,6 +9,9 @@ const {
 } = require("../../MySql/scripts/lecturer/add_new_lecturer");
 const { RegisterAdmin } = require("../../MySql/scripts/admin/add_new_admin");
 const { AdminLogin } = require("../../MySql/scripts/admin/login_admin");
+const {
+  SearchMatricNumber,
+} = require("../../MySql/scripts/admin/search_matric_number");
 const router = express.Router();
 
 const registeredDB_url = "./files/registered.json";
@@ -435,6 +438,23 @@ router.get("/all-registered-ids", (req, res) => {
         id_list: [],
         total_available_ids: total_available_ids,
         total_registered_ids: total_registered_ids,
+      },
+    });
+  }
+});
+
+// SEARCH BY MATRIC NUMBER
+router.get("/search-by-matric-number", (req, res) => {
+  const { matric_number } = req.query;
+  if (matric_number) {
+    SearchMatricNumber({ matric_number, response: res });
+  } else {
+    res.status(406).json({
+      success: false,
+      layer: "no matric number provided",
+      message: "bad request body",
+      payload_structure: {
+        matric_number: "required",
       },
     });
   }
